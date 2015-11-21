@@ -12,12 +12,13 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 * Summary of set up
   
 	1.npm install  
-	2.node install.js  
-	3.cd node_modules/node-occ  
-	4.npm install  
-	5.cd ../..  
-	6.node app.js  
-	7.browse [http://localhost:3000/](http://localhost:3000/) and [http://localhost:3000/viewer](http://localhost:3000/viewer)  
+	2.set-env.bat  
+	3.node install.js  
+	4.cd node_modules/node-occ  
+	5.npm install  
+	6.cd ../..  
+	7.node app.js  
+	8.browse [http://localhost:3000/](http://localhost:3000/) and [http://localhost:3000/viewer](http://localhost:3000/viewer)  
 
 * Configuration
 * Dependencies
