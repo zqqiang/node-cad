@@ -32,8 +32,9 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 * How to run tests
 
-	1.browse [http://localhost:3000/viewer](http://localhost:3000/viewer). Click 'Choose Files' to upload ./data/Cable Tie 2,5*100 MM.STEP  
-	2.Check if the step file can render?
+	1.browse [http://localhost:3000/viewer](http://localhost:3000/viewer).
+	2.Click 'Choose Files' to upload ./data/Cable Tie 2,5*100 MM.STEP  
+	3.Check if the step file can render?
 
 
 	![Image of Cable Tie](./data/CableTie.png)  
