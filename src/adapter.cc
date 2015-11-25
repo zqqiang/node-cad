@@ -1,14 +1,19 @@
 #include <iostream>
 #include "adapter.h"
+#include "core.h"
 
 using namespace std;
 
-void CoreAlgorithm::run()
-{
-	cout << "CoreAlgorithm::run()" << endl;
+Adapter::Adapter() {
+
 }
 
-Adapter::Adapter()
-{
-	cout << "Adapter::Adapter()" << endl;
+Adapter::~Adapter() {
+
+}
+
+void Adapter::Execute() {
+	cout << "Adapter::Execute" << endl;
+	Core *core = new Core();
+	core->Compute();
 }

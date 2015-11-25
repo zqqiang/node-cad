@@ -50,6 +50,8 @@
 			"src/Solid.cc",
 			"src/Tools.h",
 			"src/Tools.cc",
+			"src/core.h",
+			"src/core.cc",
 			"src/adapter.h",
 			"src/adapter.cc",
 			"src/Transformation.h",

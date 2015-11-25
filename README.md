@@ -20,6 +20,15 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 	7.node app.js  
 	8.browse [http://localhost:3000/](http://localhost:3000/) and [http://localhost:3000/viewer](http://localhost:3000/viewer)  
 
+* Steps of compile src
+
+	1.cd ./src
+	2.node install.js
+	3.cd ../
+	4.set-evn.bat
+	5.node_modules/node-occ/
+	6.npm install
+
 * Configuration
 * Dependencies
 

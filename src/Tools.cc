@@ -380,8 +380,8 @@ void StepAsyncReadWorker::Execute() {
 
     cout << " start ReadFile" << endl;
 
-    CoreAlgorithm *core = new CoreAlgorithm();
-    core->run();
+    Adapter *adapter = new Adapter();
+    adapter->Execute();
 
     if (aReader.ReadFile(_filename.c_str()) != IFSelect_RetDone) {
 
