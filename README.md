@@ -24,18 +24,17 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 	1.cd ./src  
 	2.add xxx.cc and xxx.h  
-	3.modify install.js to add "copy('./xxx.cc', '../node_modules/node-occ/src/xxx.cc');"  
-	  and "copy('./xxx.h', '../node_modules/node-occ/src/xxx.h');"  
+	3.modify install.js to add "copy('./xxx.cc', '../node_modules/node-occ/src/xxx.cc');"  and "copy('./xxx.h', '../node_modules/node-occ/src/xxx.h');"  
 	4.modify binding.gyp to add xxx.cc and xxx.h to "sources" property  
 
 * Steps of compile src
 
-	1.cd ./src
-	2.node install.js
-	3.cd ../
-	4.set-evn.bat
-	5.node_modules/node-occ/
-	6.npm install
+	1.cd ./src  
+	2.node install.js  
+	3.cd ../  
+	4.set-evn.bat  
+	5.node_modules/node-occ/  
+	6.npm install  
 
 * Configuration
 * Dependencies
