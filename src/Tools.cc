@@ -8,6 +8,7 @@
 #include <list>
 #include <strstream>
 #include "AsyncWorkerWithProgress.h"
+#include "adapter.h"
 
 //
 // ref : http://nikhilm.github.io/uvbook/threads.html
@@ -260,9 +261,6 @@ public:
   }
 };
 
-
-
-
 class MyProgressIndicator : public Message_ProgressIndicator
 {
   ProgressData* m_data;
@@ -382,6 +380,9 @@ void StepAsyncReadWorker::Execute() {
 
     cout << " start ReadFile" << endl;
 
+    CoreAlgorithm *core = new CoreAlgorithm();
+    core->run();
+
     if (aReader.ReadFile(_filename.c_str()) != IFSelect_RetDone) {
 
       std::strstream str;
@@ -390,9 +391,6 @@ void StepAsyncReadWorker::Execute() {
 
       message = str.str();
 
-      // Local<Value> argv[] = { Local<Value>(String::New())  };
-      //  Local<Value>  res =  callback->Call(global, 1, argv);
-      // NanReturnUndefined();
       progress->EndScope();
       progress->SetValue(105.0);
       progress->Show();
@@ -437,8 +435,6 @@ void StepAsyncReadWorker::Execute() {
     BRep_Builder B;
     TopoDS_Compound compound;
     B.MakeCompound(compound);
-
-
 
     int nbs = aReader.NbShapes();
     for (int i = 1; i <= nbs; i++) {
