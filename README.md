@@ -61,7 +61,9 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 ### Todo List ###
 
-	1.unkown entities problem.
+* Bug list
+
+	1.unkown entities problem.  
 
 ### Contribution guidelines ###
 
