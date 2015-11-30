@@ -376,6 +376,11 @@ void StepAsyncReadWorker::Execute() {
     Interface_Static::SetIVal("read.step.nonmanifold", 1);
     Interface_Static::SetIVal("read.step.product.mode", 1);
 
+    if (!Interface_Static::SetRVal("read.precision.val", 0.01))
+    {
+      cout << "Interface_Static::SetRVal('read.precision.val', 0.01) failed! Load at default 0.0001 precision." << endl;
+    }
+
     progress->NewScope(5, "reading");
 
     cout << " start ReadFile" << endl;
