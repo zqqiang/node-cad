@@ -7,6 +7,7 @@
 
 #include <list>
 #include <strstream>
+#include <exception>
 #include "AsyncWorkerWithProgress.h"
 #include "adapter.h"
 
@@ -466,7 +467,7 @@ void StepAsyncReadWorker::Execute() {
 
       Standard_Integer nb = Model->NbEntities();
 
-      cout << " nb entities =" << nb << std::endl;
+      cout << " nb entities = " << nb << std::endl;
 
       for (Standard_Integer ie = 1; ie <= nb; ie++) {
 
@@ -509,18 +510,10 @@ void StepAsyncReadWorker::Execute() {
         // skip 'N0NE' name
         if ( aName->UsefullLength() == 4 && toupper (aName->Value(1)) == 'N' && toupper (aName->Value(2)) == 'O' && toupper (aName->Value(3)) == 'N' && toupper (aName->Value(4)) == 'E')
           continue;
-        /*
-        // special check to pass names like "Open CASCADE STEP translator 6.3 1"
-        TCollection_AsciiString aSkipName ("Open CASCADE STEP translator");
-        if (aName->Length() >= aSkipName.Length()) {
-        if (aName->String().SubString(1, aSkipName.Length()).IsEqual(aSkipName))
-        continue;
-        }
 
-        */
         TCollection_ExtendedString aNameExt (aName->ToCString());
 
-        cout << " name of part =" << aName->ToCString() << std::endl;
+        cout << " name of part = " << aName->ToCString() << std::endl;
         // find target shape
         occHandle(Transfer_Binder) binder = TP->Find(enti);
         if (binder.IsNull()) continue;
@@ -535,25 +528,18 @@ void StepAsyncReadWorker::Execute() {
         for (isub = 1; isub <= nbSubs; isub++) {
           TopoDS_Shape aSub = anIndices.FindKey(isub);
           if (aSub.IsPartner(S)) {
-
-            cout << " name of part =" << aName->ToCString() << "  shape " << HashCode(aSub, -1) << " " << aSub.ShapeType() << endl;
+            cout << " name of part = " << aName->ToCString() << "  shape " << HashCode(aSub, -1) << " " << aSub.ShapeType() << endl;
           }
         }
-        //           }
-
       }
       // END: Store names
     }
-    //
-    //
-    //
   }
   catch (...) {
     std::cerr << " EXCEPTION in READ STEP" << std::endl;
     message = "caught C++ exception in readStep";
     retValue = 1;
     return;
-
   }
 
 }

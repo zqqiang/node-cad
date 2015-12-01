@@ -13,7 +13,7 @@ Adapter::~Adapter() {
 }
 
 void Adapter::Execute() {
-	cout << "Adapter::Execute" << endl;
+	cout << " Adapter::Execute" << endl;
 	Core *core = new Core();
 	core->Compute();
 }

@@ -12,5 +12,5 @@ Core::~Core() {
 }
 
 void Core::Compute() {
-	cout << "Core::Compute()" << endl;
+	cout << " Core::Compute()" << endl;
 }
