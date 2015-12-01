@@ -372,19 +372,14 @@ void StepAsyncReadWorker::Execute() {
 
     STEPControl_Reader aReader;
 
-
     Interface_Static::SetCVal("xstep.cascade.unit", "mm");
     Interface_Static::SetIVal("read.step.nonmanifold", 1);
     Interface_Static::SetIVal("read.step.product.mode", 1);
-
-    if (!Interface_Static::SetRVal("read.precision.val", 0.01))
-    {
-      cout << "Interface_Static::SetRVal('read.precision.val', 0.01) failed! Load at default 0.0001 precision." << endl;
-    }
+    Interface_Static::SetRVal("read.precision.val", 0.01);
 
     progress->NewScope(5, "reading");
 
-    cout << " start ReadFile" << endl;
+    cout << " " << __FUNCTION__ << ":" << __LINE__ << " start ReadFile" << endl;
 
     Adapter *adapter = new Adapter();
     adapter->Execute();
@@ -408,11 +403,9 @@ void StepAsyncReadWorker::Execute() {
     progress->EndScope();
     progress->Show();
 
-
     progress->NewScope(95, "transfert");
     progress->Show();
     aReader.WS()->MapReader()->SetProgress(progress);
-
 
     // Root transfers
     int nbr = aReader.NbRootsForTransfer();
@@ -423,7 +416,6 @@ void StepAsyncReadWorker::Execute() {
     progress->SetRange(0, nbr);
     int mod = nbr / 10 + 1;
     for (int n = 1; n <= nbr; n++) {
-
       Standard_Boolean ok = aReader.TransferRoot(n);
 
       Standard_Integer nbs = aReader.NbShapes();
@@ -467,7 +459,7 @@ void StepAsyncReadWorker::Execute() {
 
       Standard_Integer nb = Model->NbEntities();
 
-      cout << " nb entities = " << nb << std::endl;
+      cout << " " << __FUNCTION__ << ":" << __LINE__ << " nb entities = " << nb << std::endl;
 
       for (Standard_Integer ie = 1; ie <= nb; ie++) {
 
@@ -494,7 +486,7 @@ void StepAsyncReadWorker::Execute() {
             }
           }
           // find proper label
-          TCollection_ExtendedString str (aName->String() );
+          TCollection_ExtendedString str(aName->String());
         } else  if ( enti->IsKind( tShape ) || enti->IsKind(tGeom)) {
           aName = occHandle(StepRepr_RepresentationItem)::DownCast(enti)->Name();
         } else if (enti->DynamicType() == tPD)    {
@@ -513,7 +505,7 @@ void StepAsyncReadWorker::Execute() {
 
         TCollection_ExtendedString aNameExt (aName->ToCString());
 
-        cout << " name of part = " << aName->ToCString() << std::endl;
+        cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = " << aName->ToCString() << std::endl;
         // find target shape
         occHandle(Transfer_Binder) binder = TP->Find(enti);
         if (binder.IsNull()) continue;
@@ -521,14 +513,16 @@ void StepAsyncReadWorker::Execute() {
         TopoDS_Shape S = TransferBRep::ShapeResult(binder);
         if (S.IsNull()) continue;
 
-        cout << " name of part = ---------" << std::endl;
+        cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = ---------" << std::endl;
         // as PRODUCT can be included in the main shape
         // several times, we look here for all iclusions.
         Standard_Integer isub, nbSubs = anIndices.Extent();
+        cout << " " << __FUNCTION__ << ":" << __LINE__ << " anIndices.Extent() => " << anIndices.Extent() << endl;
         for (isub = 1; isub <= nbSubs; isub++) {
           TopoDS_Shape aSub = anIndices.FindKey(isub);
+          cout << isub << endl;
           if (aSub.IsPartner(S)) {
-            cout << " name of part = " << aName->ToCString() << "  shape " << HashCode(aSub, -1) << " " << aSub.ShapeType() << endl;
+            cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = " << aName->ToCString() << "  shape " << HashCode(aSub, -1) << " " << aSub.ShapeType() << endl;
           }
         }
       }
