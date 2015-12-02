@@ -462,9 +462,7 @@ void StepAsyncReadWorker::Execute() {
       cout << " " << __FUNCTION__ << ":" << __LINE__ << " nb entities = " << nb << std::endl;
 
       for (Standard_Integer ie = 1; ie <= nb; ie++) {
-
         occHandle(Standard_Transient) enti = Model->Value(ie);
-
         occHandle(TCollection_HAsciiString) aName;
 
         if (enti->DynamicType() == tNAUO) {
@@ -520,7 +518,6 @@ void StepAsyncReadWorker::Execute() {
         cout << " " << __FUNCTION__ << ":" << __LINE__ << " anIndices.Extent() => " << anIndices.Extent() << endl;
         for (isub = 1; isub <= nbSubs; isub++) {
           TopoDS_Shape aSub = anIndices.FindKey(isub);
-          cout << isub << endl;
           if (aSub.IsPartner(S)) {
             cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = " << aName->ToCString() << "  shape " << HashCode(aSub, -1) << " " << aSub.ShapeType() << endl;
           }
