@@ -410,6 +410,8 @@ void StepAsyncReadWorker::Execute() {
     // Root transfers
     int nbr = aReader.NbRootsForTransfer();
 
+    cout << " aReader.NbRootsForTransfer() => " << nbr << endl;
+
     Standard_Boolean failsonly = Standard_False;
     aReader.PrintCheckTransfer(failsonly, IFSelect_ItemsByEntity);
 
@@ -435,6 +437,9 @@ void StepAsyncReadWorker::Execute() {
     B.MakeCompound(compound);
 
     int nbs = aReader.NbShapes();
+
+    cout << " aReader.NbShapes() => " << nbs << endl;
+
     for (int i = 1; i <= nbs; i++) {
       const TopoDS_Shape& aShape = aReader.Shape(i);
       B.Add(compound, aShape);
@@ -504,6 +509,7 @@ void StepAsyncReadWorker::Execute() {
         TCollection_ExtendedString aNameExt (aName->ToCString());
 
         cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = " << aName->ToCString() << std::endl;
+
         // find target shape
         occHandle(Transfer_Binder) binder = TP->Find(enti);
         if (binder.IsNull()) continue;
@@ -512,6 +518,7 @@ void StepAsyncReadWorker::Execute() {
         if (S.IsNull()) continue;
 
         cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = ---------" << std::endl;
+        
         // as PRODUCT can be included in the main shape
         // several times, we look here for all iclusions.
         Standard_Integer isub, nbSubs = anIndices.Extent();

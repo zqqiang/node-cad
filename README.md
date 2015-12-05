@@ -65,6 +65,11 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 	1.unkown entities problem.  
 
+* SQL Callback
+
+	1. create table r(edge int, face int)  
+	2. create table ef(edge int, face1 int, face2 int)
+
 ### Contribution guidelines ###
 
 * Writing tests
