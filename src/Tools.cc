@@ -382,6 +382,7 @@ void StepAsyncReadWorker::Execute() {
     cout << " " << __FUNCTION__ << ":" << __LINE__ << " start ReadFile" << endl;
 
     Adapter *adapter = new Adapter();
+    adapter->Execute();
 
     if (aReader.ReadFile(_filename.c_str()) != IFSelect_RetDone) {
 
@@ -451,6 +452,16 @@ void StepAsyncReadWorker::Execute() {
     TopTools_IndexedMapOfShape anIndices;
     TopExp::MapShapes(aResShape, anIndices);
 
+    TopTools_IndexedDataMapOfShapeListOfShape M;
+    TopExp::MapShapesAndAncestors(aResShape, TopAbs_FACE, TopAbs_EDGE, M);
+
+    Standard_Integer i, mNum = M.Extent();
+    cout << "M.Extent(): " << mNum << endl;
+    for (i = 0; i < mNum; ++i) {
+      TopoDS_Shape item = M.FindKey(i);
+
+    }
+
     occHandle(Interface_InterfaceModel) Model = aReader.WS()->Model();
     occHandle(XSControl_TransferReader) TR = aReader.WS()->TransferReader();
 
@@ -517,7 +528,7 @@ void StepAsyncReadWorker::Execute() {
         if (S.IsNull()) continue;
 
         cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = ---------" << std::endl;
-        
+
         // as PRODUCT can be included in the main shape
         // several times, we look here for all iclusions.
         Standard_Integer isub, nbSubs = anIndices.Extent();
@@ -526,10 +537,6 @@ void StepAsyncReadWorker::Execute() {
           TopoDS_Shape aSub = anIndices.FindKey(isub);
           if (aSub.IsPartner(S)) {
             cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = " << aName->ToCString() << "  shape " << HashCode(aSub, -1) << " " << aSub.ShapeType() << endl;
-          }
-          if (TopAbs_FACE == aSub.ShapeType()) {
-            // cout << " sub key: " << isub << " is face" << endl;
-            adapter->Execute();
           }
         }
       }
