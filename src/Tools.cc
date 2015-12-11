@@ -382,7 +382,6 @@ void StepAsyncReadWorker::Execute() {
     cout << " " << __FUNCTION__ << ":" << __LINE__ << " start ReadFile" << endl;
 
     Adapter *adapter = new Adapter();
-    adapter->Execute();
 
     if (aReader.ReadFile(_filename.c_str()) != IFSelect_RetDone) {
 
@@ -527,6 +526,10 @@ void StepAsyncReadWorker::Execute() {
           TopoDS_Shape aSub = anIndices.FindKey(isub);
           if (aSub.IsPartner(S)) {
             cout << " " << __FUNCTION__ << ":" << __LINE__ << " name of part = " << aName->ToCString() << "  shape " << HashCode(aSub, -1) << " " << aSub.ShapeType() << endl;
+          }
+          if (TopAbs_FACE == aSub.ShapeType()) {
+            // cout << " sub key: " << isub << " is face" << endl;
+            adapter->Execute();
           }
         }
       }
