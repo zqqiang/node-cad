@@ -452,15 +452,32 @@ void StepAsyncReadWorker::Execute() {
     TopTools_IndexedMapOfShape anIndices;
     TopExp::MapShapes(aResShape, anIndices);
 
-    TopTools_IndexedDataMapOfShapeListOfShape M;
-    TopExp::MapShapesAndAncestors(aResShape, TopAbs_FACE, TopAbs_EDGE, M);
+    // TopTools_IndexedDataMapOfShapeListOfShape M;
+    // TopExp::MapShapesAndAncestors(aResShape, TopAbs_FACE, TopAbs_EDGE, M);
 
-    Standard_Integer i, mNum = M.Extent();
-    cout << "M.Extent(): " << mNum << endl;
-    for (i = 0; i < mNum; ++i) {
-      TopoDS_Shape item = M.FindKey(i);
+    // Standard_Integer i, mNum = M.Extent();
+    // cout << "M.Extent(): " << mNum << endl;
+    // for (i = 1; i <= mNum; ++i) {
+    //   TopoDS_Shape item = M.FindKey(i);
+    //   cout << "item.ShapeType() => " << item.ShapeType() << endl;
+    // }
 
-    }
+    // TopTools_IndexedMapOfShape EdgeMap;
+    // TopTools_IndexedMapOfShape FaceMap;
+    // TopExp::MapShapes(aResShape, TopAbs_EDGE, EdgeMap);
+    // Standard_Integer i, j;
+
+    // for (i = 1; i <= EdgeMap.Extent(); ++i) {
+    //   TopoDS_Shape edgeItem = EdgeMap.FindKey(i);
+    //   cout << "edgeItem.ShapeType() => " << edgeItem.ShapeType() << endl;
+
+    //   TopExp::MapShapes(edgeItem, TopAbs_FACE, FaceMap);
+    //   cout << "FaceMap.Extent() => " << FaceMap.Extent() << endl;
+    //   for (j = 1; j < FaceMap.Extent(); ++j) {
+    //     TopoDS_Shape faceItem = FaceMap.FindKey(j);
+    //     cout << "faceItem.ShapeType() => " << faceItem.ShapeType() << endl;
+    //   }
+    // }
 
     occHandle(Interface_InterfaceModel) Model = aReader.WS()->Model();
     occHandle(XSControl_TransferReader) TR = aReader.WS()->TransferReader();
