@@ -381,9 +381,6 @@ void StepAsyncReadWorker::Execute() {
 
     cout << " " << __FUNCTION__ << ":" << __LINE__ << " start ReadFile" << endl;
 
-    Adapter *adapter = new Adapter();
-    adapter->Execute();
-
     if (aReader.ReadFile(_filename.c_str()) != IFSelect_RetDone) {
 
       std::strstream str;
@@ -452,42 +449,32 @@ void StepAsyncReadWorker::Execute() {
     TopTools_IndexedMapOfShape anIndices;
     TopExp::MapShapes(aResShape, anIndices);
 
-    // TopTools_IndexedDataMapOfShapeListOfShape M;
-    // TopExp::MapShapesAndAncestors(aResShape, TopAbs_FACE, TopAbs_EDGE, M);
+    Adapter *adapter = new Adapter();
 
-    // Standard_Integer i, mNum = M.Extent();
-    // cout << "M.Extent(): " << mNum << endl;
-    // for (i = 1; i <= mNum; ++i) {
-    //   TopoDS_Shape item = M.FindKey(i);
-    //   cout << "item.ShapeType() => " << item.ShapeType() << endl;
-    // }
-
-    // TopTools_IndexedMapOfShape EdgeMap;
-    // TopTools_IndexedMapOfShape FaceMap;
-    // TopExp::MapShapes(aResShape, TopAbs_EDGE, EdgeMap);
-    // Standard_Integer i, j;
-
-    // for (i = 1; i <= EdgeMap.Extent(); ++i) {
-    //   TopoDS_Shape edgeItem = EdgeMap.FindKey(i);
-    //   cout << "edgeItem.ShapeType() => " << edgeItem.ShapeType() << endl;
-
-    //   TopExp::MapShapes(edgeItem, TopAbs_FACE, FaceMap);
-    //   cout << "FaceMap.Extent() => " << FaceMap.Extent() << endl;
-    //   for (j = 1; j < FaceMap.Extent(); ++j) {
-    //     TopoDS_Shape faceItem = FaceMap.FindKey(j);
-    //     cout << "faceItem.ShapeType() => " << faceItem.ShapeType() << endl;
-    //   }
-    // }
+    TopTools_IndexedMapOfShape edgeMap;
+    TopExp::MapShapes(aResShape, TopAbs_EDGE, edgeMap);
 
     TopTools_IndexedMapOfShape faceMap;
-    TopExp::MapShapes(aResShape,TopAbs_FACE,faceMap);
-    TopExp_Explorer expEdge(aResShape,TopAbs_EDGE);
-    while (expEdge.More()) {
-      TopExp_Explorer expFace(expEdge.Current(),TopAbs_FACE);
-      while (expFace.More()) {
-        expFace.Next();
+    TopExp::MapShapes(aResShape, TopAbs_FACE, faceMap);
+
+    TColStd_Array1OfInteger faceArray(1, edgeMap.Extent());
+    faceArray.Init(0);
+
+    TopExp_Explorer expFace(aResShape, TopAbs_FACE);
+    while (expFace.More()) {
+      TopExp_Explorer expEdge(expFace.Current(), TopAbs_EDGE);
+      Standard_Integer faceIndex = faceMap.FindIndex(expFace.Current());
+      cout << "faceIndex => " << faceIndex << endl;
+      while (expEdge.More()) {
+        Standard_Integer edgeIndex = edgeMap.FindIndex(expEdge.Current());
+        cout << "edgeIndex => " << edgeIndex << endl;
+        if (faceArray(edgeIndex) && faceArray(edgeIndex) != faceIndex) {
+          adapter->Execute(edgeIndex, faceArray(edgeIndex), faceIndex);
+        }
+        faceArray(edgeIndex) = faceIndex;
+        expEdge.Next();
       }
-      expEdge.Next();
+      expFace.Next();
     }
 
     occHandle(Interface_InterfaceModel) Model = aReader.WS()->Model();

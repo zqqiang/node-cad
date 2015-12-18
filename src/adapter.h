@@ -4,5 +4,5 @@ public:
 	Adapter();
 	~Adapter();
 
-	void Execute();
+	void Execute(int edge, int faceA, int faceB);
 };
