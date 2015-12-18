@@ -479,6 +479,17 @@ void StepAsyncReadWorker::Execute() {
     //   }
     // }
 
+    TopTools_IndexedMapOfShape faceMap;
+    TopExp::MapShapes(aResShape,TopAbs_FACE,faceMap);
+    TopExp_Explorer expEdge(aResShape,TopAbs_EDGE);
+    while (expEdge.More()) {
+      TopExp_Explorer expFace(expEdge.Current(),TopAbs_FACE);
+      while (expFace.More()) {
+        expFace.Next();
+      }
+      expEdge.Next();
+    }
+
     occHandle(Interface_InterfaceModel) Model = aReader.WS()->Model();
     occHandle(XSControl_TransferReader) TR = aReader.WS()->TransferReader();
 
