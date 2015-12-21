@@ -7,4 +7,4 @@ var copy = function copy(src, dst) {
 	})
 };
 
-copy('./config.pl', '../postgresql-9.5rc1/src/tools/msvc/');
+copy('./config.pl', '../postgresql-9.5rc1/src/tools/msvc/config.pl');
