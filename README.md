@@ -46,7 +46,8 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 * Database configuration
 
-	sqlite [todo]()  
+	1.postgresql [9.5rc1](https://ftp.postgresql.org/pub/source/v9.5rc1/postgresql-9.5rc1.tar.bz2)  
+	2.core plugin cadfix need add to contrib/  
 
 * How to run tests
 
