@@ -1,1 +1,1 @@
-$config->{python} = 'C:\Python27';
+$config->{python} = 'C:/Python27/';
