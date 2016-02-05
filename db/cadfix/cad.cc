@@ -58,3 +58,73 @@ Datum cadinit(PG_FUNCTION_ARGS) {
 
   PG_RETURN_INT32(n);
 }
+
+PG_FUNCTION_INFO_V1(full_edge);
+Datum full_edge(PG_FUNCTION_ARGS);
+Datum full_edge(PG_FUNCTION_ARGS) {
+  int line_number, line_list_size = 500000, line_number_returned,
+                   line_number_of_parents;
+  int *line_list_of_entity_numbers, *line_signed_list_of_entity_numbers,
+      *line_list_of_entity_types;
+  int class;
+  int magic, i;
+
+  char *pch;
+  pch = PG_GETARG_CSTRING(0);
+
+  if (strcmp(pch, "evaluate") == 0) {
+    struct timespec vartime = timer_start();  // begin a timer called 'vartime'
+
+    FILE *fs = fopen("/home/zhibin/logs/evaluate_full_edge.csv", "w");
+    // cficGetModelEntityTotal(CFI_TYPE_LINE, CFI_SUBTYPE_ALL, &line_number);
+    magic = 0;
+    cficGetModelEntityList(CFI_TYPE_LINE, CFI_SUBTYPE_ALL, line_list_size,
+                           &magic, &line_number_returned,
+                           &line_list_of_entity_numbers);
+
+    cficGetTopoParentTotal(CFI_TYPE_LINE, line_list_of_entity_numbers[0],
+                           &line_number_of_parents);
+    magic = 0;
+    cficGetTopoParentList(CFI_TYPE_LINE, line_list_of_entity_numbers[0],
+                          line_list_size, &magic, &line_number_returned,
+                          &line_list_of_entity_types,
+                          &line_signed_list_of_entity_numbers);
+    classify(abs(line_list_of_entity_numbers[0]), &class);
+
+    long time_elapsed_nanos = timer_end(vartime);
+    printf("Time taken (nanoseconds): %ld\n", time_elapsed_nanos);
+
+    fprintf(fs, "%ld\n", time_elapsed_nanos);
+    fclose(fs);
+
+    return true;
+
+  } else if (strcmp(pch, "import") == 0) {
+    FILE *fs = fopen("/home/zhibin/logs/full_edge.csv", "w");
+    cficGetModelEntityTotal(CFI_TYPE_LINE, CFI_SUBTYPE_ALL, &line_number);
+    magic = 0;
+    cficGetModelEntityList(CFI_TYPE_LINE, CFI_SUBTYPE_ALL, line_list_size,
+                           &magic, &line_number_returned,
+                           &line_list_of_entity_numbers);
+
+    for (i = 0; i < line_number; i++) {
+      cficGetTopoParentTotal(CFI_TYPE_LINE, line_list_of_entity_numbers[i],
+                             &line_number_of_parents);
+      magic = 0;
+      cficGetTopoParentList(CFI_TYPE_LINE, line_list_of_entity_numbers[i],
+                            line_list_size, &magic, &line_number_returned,
+                            &line_list_of_entity_types,
+                            &line_signed_list_of_entity_numbers);
+      classify(abs(line_list_of_entity_numbers[i]), &class);
+      fprintf(fs, "%d,%d,%d,%d\n%d,%d,%d,%d\n",
+              (line_list_of_entity_numbers[i]),
+              abs(line_signed_list_of_entity_numbers[0]),
+              abs(line_signed_list_of_entity_numbers[1]), class,
+              (line_list_of_entity_numbers[i]),
+              abs(line_signed_list_of_entity_numbers[1]),
+              abs(line_signed_list_of_entity_numbers[0]), class);
+    }
+    fclose(fs);
+    return true;
+  }
+}
