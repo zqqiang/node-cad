@@ -18,11 +18,11 @@ fs.access('../postgresql-9.5.1/contrib/cadfix/', function(err) {
 				console.log('mkdir failed!');
 			} else {
 				copy('./cadfix/Makefile', '../postgresql-9.5.1/contrib/cadfix/Makefile');
-				copy('./cadfix/cad.cc', '../postgresql-9.5.1/contrib/cadfix/cad.cc');
+				copy('./cadfix/cad.c', '../postgresql-9.5.1/contrib/cadfix/cad.c');
 			}
 		})
 	} else {
 		copy('./cadfix/Makefile', '../postgresql-9.5.1/contrib/cadfix/Makefile');
-		copy('./cadfix/cad.cc', '../postgresql-9.5.1/contrib/cadfix/cad.cc');
+		copy('./cadfix/cad.c', '../postgresql-9.5.1/contrib/cadfix/cad.c');
 	}
 });
