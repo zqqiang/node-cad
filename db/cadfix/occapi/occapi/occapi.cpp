@@ -1,4 +1,6 @@
-#include "occ.h"
+#include <STEPControl_Reader.hxx>
+
+#include "occapi.h"
 
 extern "C" int occ_get_line_number(char *filename)
 {

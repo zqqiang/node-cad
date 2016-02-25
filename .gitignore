@@ -1,4 +1,5 @@
 /node_modules
 npm-debug.log
 /postgresql-9.5.1
-/db/cadfix/debug
+/db/cadfix/occapi/Debug
+/db/cadfix/occapi/occapi/Debug
