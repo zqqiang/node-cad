@@ -16,10 +16,10 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ItemGroup>
-    <ClCompile Include="occ.cc" />
+    <ClCompile Include="occapi.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="occ.h" />
+    <ClInclude Include="occapi.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Targets" />
 </Project>
