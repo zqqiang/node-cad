@@ -10,7 +10,7 @@
 
 #include "postgres.h"
 #include "fmgr.h"
-#include "occ.h"
+#include "occapi.h"
 
 PG_FUNCTION_INFO_V1(cadinit);
 Datum cadinit(PG_FUNCTION_ARGS);

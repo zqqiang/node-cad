@@ -1,4 +1,7 @@
 #include <STEPControl_Reader.hxx>
+#include <Interface_Static.hxx>
+#include <BRepBuilderAPI_MakeShape.hxx>
+#include <TopExp_Explorer.hxx>
 
 #include "occapi.h"
 
