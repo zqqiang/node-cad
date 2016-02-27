@@ -18,11 +18,15 @@ fs.access('../postgresql-9.5.1/contrib/cadfix/', function(err) {
 				console.log('mkdir failed!');
 			} else {
 				copy('./cadfix/Makefile', '../postgresql-9.5.1/contrib/cadfix/Makefile');
-				copy('./cadfix/cad.c', '../postgresql-9.5.1/contrib/cadfix/cad.c');
+				copy('./cadfix/cadfix.c', '../postgresql-9.5.1/contrib/cadfix/cadfix.c');
+				copy('./cadfix/occapi/occapi/occapi.h', '../postgresql-9.5.1/contrib/cadfix/occapi.h');
+				copy('./cadfix/occapi/Debug/occapi.lib', '../postgresql-9.5.1/contrib/cadfix/occapi.lib');
 			}
 		})
 	} else {
 		copy('./cadfix/Makefile', '../postgresql-9.5.1/contrib/cadfix/Makefile');
-		copy('./cadfix/cad.c', '../postgresql-9.5.1/contrib/cadfix/cad.c');
+		copy('./cadfix/cadfix.c', '../postgresql-9.5.1/contrib/cadfix/cadfix.c');
+		copy('./cadfix/occapi/occapi/occapi.h', '../postgresql-9.5.1/contrib/cadfix/occapi.h');
+		copy('./cadfix/occapi/Debug/occapi.lib', '../postgresql-9.5.1/contrib/cadfix/occapi.lib');
 	}
 });
