@@ -1,6 +1,6 @@
 MODULES = cadfix
 
-SHLIB_LINK = -loccapi
+PG_LIBS = occapi
 
 ifdef USE_PGXS
 PG_CONFIG = pg_config
