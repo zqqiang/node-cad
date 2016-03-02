@@ -1,6 +1,7 @@
-MODULES = cadfix
+MODULE_big = cadfix
+OBJS = cadfix.o $(WIN32RES)
 
-PG_LIBS = occapi
+EXTENSION = cadfix
 
 ifdef USE_PGXS
 PG_CONFIG = pg_config
@@ -12,3 +13,5 @@ top_builddir = ../..
 include $(top_builddir)/src/Makefile.global
 include $(top_srcdir)/contrib/contrib-global.mk
 endif
+
+SHLIB_LINK += $(filter -loccapi, $(LIBS))
