@@ -44,10 +44,15 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 	download and install [cmake](http://www.cmake.org/download/)  
 	install node-js 32 bits version 0.12 from [www.nodejs.org](http://nodejs.org/dist/v0.12.0/node-v0.12.0-x86.msi)  
 
-* Database configuration
+* Database build and install
 
-	1.postgresql [9.5rc1](https://ftp.postgresql.org/pub/source/v9.5rc1/postgresql-9.5rc1.tar.bz2)  
-	2.core plugin cadfix need add to contrib/  
+	1.download postgresql [9.5.1](https://ftp.postgresql.org/pub/source/v9.5.1/postgresql-9.5.1.tar.bz2)  
+	2.unzip to ./postgresql-9.5.1  
+	3.node ./db/install.js  
+	4.open "Developer Command Prompt for VS2012" cmder  
+	5.cd ./postgresql-9.5.1/src/tools/msvc/  
+	6.build.bat  
+	7.install.bat ./path/to/install/  
 
 * How to run tests
 
