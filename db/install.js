@@ -9,6 +9,7 @@ var copy = function copy(src, dst) {
 
 copy('./config.pl', '../postgresql-9.5.1/src/tools/msvc/config.pl');
 copy('./VSObjectFactory.pm', '../postgresql-9.5.1/src/tools/msvc/VSObjectFactory.pm');
+copy('./Mkvcbuild.pm', '../postgresql-9.5.1/src/tools/msvc/Mkvcbuild.pm');
 
 fs.access('../postgresql-9.5.1/contrib/cadfix/', function(err) {
 	if (err) {
