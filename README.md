@@ -46,6 +46,7 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 * Database build and install
 
+	0.install all dependence. [Building with Visual C++ Requirements](http://www.postgresql.org/docs/devel/static/install-windows-full.html)  
 	1.download postgresql [9.5.1](https://ftp.postgresql.org/pub/source/v9.5.1/postgresql-9.5.1.tar.bz2)  
 	2.unzip to ./postgresql-9.5.1  
 	3.node ./db/install.js  
