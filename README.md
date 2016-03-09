@@ -55,6 +55,14 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 	6.build.bat  
 	7.install.bat ./path/to/install/  
 
+* Database start and access
+
+	0.set env => ./node-cad/db/pgenv.bat  
+	1.initialize db (only first time) => initdb -D ./pgsql/data  
+	2.start db => pg_ctl start -D ./pgsql/data -l pgrun_log  
+	3.create db => createdb mydb  
+	3.accessing database => psql mydb  
+
 * How to run tests
 
 	1.browse [http://localhost:3000/viewer](http://localhost:3000/viewer).  
