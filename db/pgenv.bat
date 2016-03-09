@@ -1,1 +1,1 @@
-set PATH=%PATH%;D:\postgresql\bin;
+set PATH=%PATH%D:\postgresql\bin;
