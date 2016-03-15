@@ -1,0 +1,5 @@
+# cadfix extension
+comment = 'cadfix functions for PostgreSQL'
+default_version = '1.0'
+module_pathname = '$libdir/cadfix'
+relocatable = false
