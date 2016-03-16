@@ -79,7 +79,7 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 * Bug list
 
-	1.unkown entities problem.  
+	1.Dependence Walker: Error: A circular dependency was detected.
 
 * SQL Callback
 
