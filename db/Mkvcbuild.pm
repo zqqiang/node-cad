@@ -884,14 +884,36 @@ sub AdjustModule
 	{
 		print "zqqiang get cadfix\n";
 		$proj->AddLibrary('contrib/cadfix/occapi.lib');
+		
+		$proj->AddLibrary('../oce-0.17/Win32/lib/TKBool.lib');
+		$proj->AddLibrary('../oce-0.17/Win32/lib/TKBRep.lib');
+		$proj->AddLibrary('../oce-0.17/Win32/lib/TKernel.lib');
+		$proj->AddLibrary('../oce-0.17/Win32/lib/TKMath.lib');
+		$proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEP.lib');
+		$proj->AddLibrary('../oce-0.17/Win32/lib/TKTopAlgo.lib');
+		$proj->AddLibrary('../oce-0.17/Win32/lib/TKXSBase.lib');
+
+		# todo use lib
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKMesh.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKOffset.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKPLCAF.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKPrim.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKPShape.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKShapeSchema.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKShHealing.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKStdLSchema.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEP209.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEPAttr.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEPBase.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKSTL.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKTObj.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKXMesh.lib');
+		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKXmlL.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/FWOSPlugin.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/PTKernel.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKBinL.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKBO.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKBool.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKBRep.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKCDF.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKernel.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKFeat.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKFillet.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKG2d.lib');
@@ -901,25 +923,6 @@ sub AdjustModule
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKHLR.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKIGES.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKLCAF.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKMath.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKMesh.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKOffset.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKPLCAF.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKPrim.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKPShape.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKShapeSchema.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKShHealing.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKStdLSchema.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEP.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEP209.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEPAttr.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEPBase.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKSTL.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKTObj.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKTopAlgo.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKXMesh.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKXmlL.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKXSBase.lib');
 	}
 
 	if ($module_defines->{$n})

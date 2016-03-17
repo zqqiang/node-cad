@@ -10,6 +10,8 @@
 #include <math.h>
 #include <stddef.h>
 
+PG_MODULE_MAGIC;
+
 int occ_get_line_number(char *filename);
 
 PG_FUNCTION_INFO_V1(cadinit);
