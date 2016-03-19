@@ -885,13 +885,13 @@ sub AdjustModule
 		print "zqqiang get cadfix\n";
 		$proj->AddLibrary('contrib/cadfix/occapi.lib');
 		
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKBool.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKBRep.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKernel.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKMath.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKSTEP.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKTopAlgo.lib');
-		$proj->AddLibrary('../oce-0.17/Win32/lib/TKXSBase.lib');
+		# $proj->AddLibrary('TKBool.lib');
+		# $proj->AddLibrary('TKBRep.lib');
+		# $proj->AddLibrary('TKernel.lib');
+		# $proj->AddLibrary('TKMath.lib');
+		# $proj->AddLibrary('TKSTEP.lib');
+		# $proj->AddLibrary('TKTopAlgo.lib');
+		# $proj->AddLibrary('TKXSBase.lib');
 
 		# todo use lib
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKMesh.lib');
@@ -947,9 +947,9 @@ sub AdjustModule
 	}
 	if ($module_extralibs->{$n})
 	{
-		foreach my $l (@{ $module_extralibs->{$n} })
+		foreach my $i (@{ $module_extralibs->{$n} })
 		{
-			$proj->AddLibrary($l);
+			$proj->AddLibrary($i);
 		}
 	}
 	if ($module_extraincludes->{$n})
