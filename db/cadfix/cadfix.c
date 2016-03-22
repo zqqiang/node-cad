@@ -9,28 +9,34 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stddef.h>
+#include <curl/curl.h>
 
 PG_MODULE_MAGIC;
-
-int occ_get_line_number(char *filename);
 
 PG_FUNCTION_INFO_V1(cadinit);
 Datum cadinit(PG_FUNCTION_ARGS);
 Datum cadinit(PG_FUNCTION_ARGS)
 {
   int n = 0;
-  char path[100];
-  char* pch = PG_GETARG_CSTRING(0);
-  FILE* fs = fopen("/home/zqqiang/logs/edgenumber.csv", "a+");
+  CURL *curl;
+  CURLcode res;
 
-  sprintf(path, "/home/zqqiang/models/%s.fbm", pch);
-  puts(path);
+  curl = curl_easy_init();
+  if (curl) {
+    curl_easy_setopt(curl, CURLOPT_URL, "http://www.google.ca");
+    /* example.com is redirected, so we tell libcurl to follow redirection */
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
-  n = occ_get_line_number(path);
+    /* Perform the request, res will get the return code */
+    res = curl_easy_perform(curl);
+    /* Check for errors */
+    if (res != CURLE_OK)
+      fprintf(stderr, "curl_easy_perform() failed: %s\n",
+              curl_easy_strerror(res));
 
-  printf("there are %d lines\n", n);
-  fprintf(fs, "%d\n", n);
-  fclose(fs);
+    /* always cleanup */
+    curl_easy_cleanup(curl);
+  }
 
   PG_RETURN_INT32(n);
 }

@@ -883,15 +883,18 @@ sub AdjustModule
 	if ($n eq "cadfix")
 	{
 		print "zqqiang get cadfix\n";
-		$proj->AddLibrary('contrib/cadfix/occapi.lib');
-		
-		# $proj->AddLibrary('TKBool.lib');
-		# $proj->AddLibrary('TKBRep.lib');
-		# $proj->AddLibrary('TKernel.lib');
-		# $proj->AddLibrary('TKMath.lib');
-		# $proj->AddLibrary('TKSTEP.lib');
-		# $proj->AddLibrary('TKTopAlgo.lib');
-		# $proj->AddLibrary('TKXSBase.lib');
+		$proj->AddIncludeDir('D:\Workspaces\Project\nxCad\curl-7.47.1\builds\libcurl-vc11-x86-release-dll-ipv6-sspi-winssl\include');
+		$proj->AddLibrary('D:\Workspaces\Project\nxCad\curl-7.47.1\builds\libcurl-vc11-x86-release-dll-ipv6-sspi-winssl\lib\libcurl.lib');
+
+		# $proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\db\cadfix\occapi\Debug\occapi.lib');
+
+		# $proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKBool.lib');
+		# $proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKBRep.lib');
+		# $proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKernel.lib');
+		# $proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKMath.lib');
+		# $proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKSTEP.lib');
+		# $proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKTopAlgo.lib');
+		# $proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKXSBase.lib');
 
 		# todo use lib
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKMesh.lib');
