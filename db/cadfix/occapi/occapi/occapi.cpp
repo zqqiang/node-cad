@@ -10,6 +10,8 @@ extern "C" int occ_get_line_number(char *filename)
 	int n = 0;
 	STEPControl_Reader aReader;
 
+	puts("occ_get_line_number running!");
+
 	Interface_Static::SetCVal("xstep.cascade.unit", "mm");
 	Interface_Static::SetIVal("read.step.nonmanifold", 1);
 	Interface_Static::SetIVal("read.step.product.mode", 1);

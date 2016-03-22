@@ -52,7 +52,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\postgresql\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>TKBool.lib;TKBRep.lib;TKernel.lib;TKMath.lib;TKSTEP.lib;TKTopAlgo.lib;TKXSBase.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
