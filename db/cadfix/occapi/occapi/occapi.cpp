@@ -2,6 +2,7 @@
 #include <Interface_Static.hxx>
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <TopExp_Explorer.hxx>
+#include <BRep_Builder.hxx>
 
 #include "occapi.h"
 
@@ -10,21 +11,45 @@ extern "C" int occ_get_line_number(char *filename)
 	int n = 0;
 	STEPControl_Reader aReader;
 
-	puts("occ_get_line_number running!");
-
 	Interface_Static::SetCVal("xstep.cascade.unit", "mm");
 	Interface_Static::SetIVal("read.step.nonmanifold", 1);
 	Interface_Static::SetIVal("read.step.product.mode", 1);
 	Interface_Static::SetRVal("read.precision.val", 0.01);
 
 	if (aReader.ReadFile(filename) != IFSelect_RetDone) {
-		puts("LOG: open model failed");
+		printf("ERROR: open model [%s] failed\n", filename);
 	} else {
-		puts("LOG: open model success");
+		printf("LOG: open model [%s] success\n", filename);
 	}
 
-	// todo: better calculate line number method?
+	int nbr = aReader.NbRootsForTransfer();
+	printf("LOG: aReader.NbRootsForTransfer() [%d]\n", nbr);
+
+	int mod = nbr / 10 + 1;
+	for (int n = 1; n <= nbr; n++) {
+		Standard_Boolean ok = aReader.TransferRoot(n);
+		Standard_Integer nbs = aReader.NbShapes();
+		if (!ok || nbs == 0) {
+			continue; // skip empty root
+		}
+	}
+
 	TopoDS_Shape aResShape;
+	BRep_Builder B;
+	TopoDS_Compound compound;
+	B.MakeCompound(compound);
+
+	int nbs = aReader.NbShapes();
+	printf("LOG: aReader.NbShapes() [%d]\n", nbs);
+
+	for (int i = 1; i <= nbs; i++) {
+		const TopoDS_Shape& aShape = aReader.Shape(i);
+		B.Add(compound, aShape);
+	}
+
+	aResShape = compound;
+
+	// todo: better calculate line number method?
 	TopExp_Explorer expEdge(aResShape, TopAbs_EDGE);
 	while (expEdge.More()) {
 		n++;
