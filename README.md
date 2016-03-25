@@ -62,7 +62,11 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 	2.start db => pg_ctl start -D ./pgsql/data -l pgrun_log  
 	3.create db => createdb mydb  
 	4.accessing database => psql mydb  
-	5.call cadfix contrib function => CREATE FUNCTION cadinit(cstring) RETURNS int AS 'cadfix' LANGUAGE C;  
+
+* Database query
+
+	0.CREATE FUNCTION cadinit(cstring) RETURNS int AS 'cadfix' LANGUAGE C;  
+	1.select cadinit('path\to\cad.step');  
 
 * How to run tests
 
