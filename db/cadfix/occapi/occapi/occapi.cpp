@@ -6,6 +6,8 @@
 
 #include "occapi.h"
 
+static TopoDS_Shape aResShape;
+
 extern "C" int occ_get_line_number(char *filename)
 {
 	int n = 0;
@@ -34,7 +36,6 @@ extern "C" int occ_get_line_number(char *filename)
 		}
 	}
 
-	TopoDS_Shape aResShape;
 	BRep_Builder B;
 	TopoDS_Compound compound;
 	B.MakeCompound(compound);
@@ -57,4 +58,34 @@ extern "C" int occ_get_line_number(char *filename)
 	}
 
 	return n;
+}
+
+
+extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
+{
+	TopTools_IndexedDataMapOfShapeListOfShape aEdgeFaceMap;
+	TopExp::MapShapesAndAncestors(aResShape, TopAbs_EDGE, TopAbs_FACE, aEdgeFaceMap);
+
+	Standard_Integer i, nE = aEdgeFaceMap.Extent();
+	for (int i = 1; i <= nE; ++i) {
+		const TopTools_ListOfShape& aListOfFaces = aEdgeFaceMap.FindFromIndex(i);
+
+		Standard_Integer numOfFace = aListOfFaces.Extent();
+		if (2 != numOfFace) {
+			printf("index [%d] parent face number is [%d]\n", i, numOfFace);
+		}
+
+		TopTools_ListIteratorOfListOfShape itFace;
+		for (itFace.Initialize(aListOfFaces); itFace.More(); itFace.Next()) {
+			const TopoDS_Shape& shapeFace = itFace.value();
+
+		}
+	}
+
+	return 0;
+}
+
+extern "C" int occ_write_edge_face_class(FILE *fs)
+{
+	return 0;
 }
