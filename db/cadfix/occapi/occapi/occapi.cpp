@@ -3,6 +3,10 @@
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <TopExp_Explorer.hxx>
 #include <BRep_Builder.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
 
 #include "occapi.h"
 
@@ -66,8 +70,11 @@ extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
 	TopTools_IndexedDataMapOfShapeListOfShape aEdgeFaceMap;
 	TopExp::MapShapesAndAncestors(aResShape, TopAbs_EDGE, TopAbs_FACE, aEdgeFaceMap);
 
+	TopTools_IndexedMapOfShape faceMap;
+	TopExp::MapShapes(aResShape, TopAbs_FACE, faceMap);
+
 	Standard_Integer i, nE = aEdgeFaceMap.Extent();
-	for (int i = 1; i <= nE; ++i) {
+	for (i = 1; i <= nE; ++i) {
 		const TopTools_ListOfShape& aListOfFaces = aEdgeFaceMap.FindFromIndex(i);
 
 		Standard_Integer numOfFace = aListOfFaces.Extent();
@@ -76,9 +83,11 @@ extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
 		}
 
 		TopTools_ListIteratorOfListOfShape itFace;
+		Standard_Integer indexFace = 0;
 		for (itFace.Initialize(aListOfFaces); itFace.More(); itFace.Next()) {
-			const TopoDS_Shape& shapeFace = itFace.value();
-
+			const TopoDS_Shape& shapeFace = itFace.Value();
+			Standard_Integer faceIndex = faceMap.FindIndex(shapeFace);
+			printf("%d => faceIndex [%d]\n", indexFace, faceIndex);
 		}
 	}
 
