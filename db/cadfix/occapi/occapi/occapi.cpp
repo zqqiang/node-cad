@@ -152,8 +152,10 @@ int classify_at_t(TopoDS_Face &face1,
 	              norm2.Z(),
 	              cross);
 
-	cficCalcLineDerivAtT(line, t, tangent + 0, tangent + 1,
-	                     tangent + 2, &dxtt, &dytt, &dztt);
+	// cficCalcLineDerivAtT(line, t, tangent + 0, tangent + 1,
+	//                      tangent + 2, &dxtt, &dytt, &dztt);
+
+	Geom_Line::D2();
 
 	// todo:
 	convex = dot_product(cross[0], cross[1], cross[2], tangent) * orient_line_in_face1 * orient1 < 0.0;
