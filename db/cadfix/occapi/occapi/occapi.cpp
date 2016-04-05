@@ -3,10 +3,12 @@
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <TopExp_Explorer.hxx>
 #include <BRep_Builder.hxx>
+#include <BRepTools.hxx>
 #include <TopExp.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <GeomLProp_SLProps.hxx>
 
 #include <chrono>
 #include "occapi.h"
@@ -74,7 +76,7 @@ int classify_at_t(TopoDS_Face &face1,
                   TopoDS_Edge &edge,
                   double orient_line_in_face1,
                   double t,
-                  int *class)
+                  int *category)
 {
 	double *uv = NULL;
 	double *normal1 = NULL;
@@ -82,7 +84,7 @@ int classify_at_t(TopoDS_Face &face1,
 	double orient1;
 	double orient2;
 	double cross[3];
-	double tangent[3];
+	// double tangent[3];
 	double dxtt, dytt, dztt;
 	double cosine;
 	int convex;
@@ -111,8 +113,8 @@ int classify_at_t(TopoDS_Face &face1,
 
 	/* Take account of the orientations of the faces within their parent body -
 	 * reverse the normal if the face is used in a negative sense. */
-	ERR(face_orientation(face1, &orient1));
-	ERR(face_orientation(face2, &orient2));
+	face_orientation(face1, &orient1);
+	face_orientation(face2, &orient2);
 
 	// {
 	// 	int j;
@@ -122,43 +124,49 @@ int classify_at_t(TopoDS_Face &face1,
 	// 	}
 	// }
 
-	norm1.X() *= orient1;
-	norm1.Y() *= orient1;
-	norm1.Z() *= orient1;
+	Standard_Real x1, y1, z1, x2, y2, z2;
 
-	norm2.X() *= orient2;
-	norm2.Y() *= orient2;
-	norm2.Z() *= orient2;
+	x1 = norm1.X() * orient1;
+	y1 = norm1.Y() * orient1;
+	z1 = norm1.Z() * orient1;
+
+	x2 = norm2.X() * orient2;
+	y2 = norm2.Y() * orient2;
+	z2 = norm2.Z() * orient2;
 
 	/* Find the cosine of the angle between the normals, to determine if the
 	 * angle is flat. */
-	cosine = dot_product(norm1.X(),
-	                     norm1.Y(),
-	                     norm1.Z(),
-	                     norm2.X(),
-	                     norm2.Y(),
-	                     norm2.Z());
+	cosine = dot_product(x1,
+	                     y1,
+	                     z1,
+	                     x2,
+	                     y2,
+	                     z2);
 
 	/* Take the cross-product of the two normals, and compare it with the line
 	 * tangent, to see if it points in the same direction. This allows us to
 	 * tell concavity from convexity.
 	 * The sense of the line in the parent faces, and the orientation of the
 	 * parent faces in the bodies, must be taken into account. */
-	cross_product(norm1.X(),
-	              norm1.Y(),
-	              norm1.Z(),
-	              norm2.X(),
-	              norm2.Y(),
-	              norm2.Z(),
+	cross_product(x1,
+	              y1,
+	              z1,
+	              x2,
+	              y2,
+	              z2,
 	              cross);
 
 	// cficCalcLineDerivAtT(line, t, tangent + 0, tangent + 1,
 	//                      tangent + 2, &dxtt, &dytt, &dztt);
 
-	Geom_Line::D2();
+	Standard_Real aFirst, aLast;
+	Handle(Geom_Curve) aCurve3d = BRep_Tool::Curve (edge, aFirst, aLast);
 
-	// todo:
-	convex = dot_product(cross[0], cross[1], cross[2], tangent) * orient_line_in_face1 * orient1 < 0.0;
+	gp_Pnt P;
+	gp_Vec V1, V2;
+	aCurve3d.D2(t, P, V1, V2);
+
+	convex = dot_product(cross[0], cross[1], cross[2], V1.X(), V1.Y(), V1.Z()) * orient_line_in_face1 * orient1 < 0.0;
 
 	if (fabs(cosine) > cos(M_PI / 40.0)) {
 		/* Angle < 4.5 degrees; call this flat. */
@@ -192,20 +200,20 @@ int classify(TopoDS_Face &Face1, TopoDS_Face &Face2,  TopoDS_Edge &edge, int *cl
 
 	/* Check the classification at 11 points along the edge. */
 	for (i = 0; i <= 10; ++i) {
-		int class2;
+		int category;
 
-		classify_at_t(face1, face2, edge, orient_line_in_face1, i * 0.1, &class2);
+		classify_at_t(face1, face2, edge, orient_line_in_face1, i * 0.1, &category);
 
 		/* If we have no classification for this edge yet, use this
 		   classification. Otherwise, if the current classification is
 		   tangential, override it with the new one, or if the current and new
 		   classifications disagree, mark this edge as MIXED. */
 		if (*class == 0) {
-			*class = class2;
-		} else if (*class == class2) {
+			*class = category;
+		} else if (*class == category) {
 			/* Do nothing. */
 		} else if (*class == TANGENTIAL) {
-			*class = class2;
+			*class = category;
 		} else {
 			*class = MIXED;
 		}
@@ -269,6 +277,7 @@ extern "C" int occ_get_line_number(char *filename)
 
 extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
 {
+	int category;
 	auto start = std::chrono::high_resolution_clock::now();
 
 	TopTools_IndexedDataMapOfShapeListOfShape aEdgeFaceMap;
@@ -290,10 +299,19 @@ extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
 		}
 
 		TopTools_ListIteratorOfListOfShape itFace;
-		for (itFace.Initialize(aListOfFaces); itFace.More(); itFace.Next()) {
-			const TopoDS_Shape& shapeFace = itFace.Value();
-			Standard_Integer faceIndex = faceMap.FindIndex(shapeFace);
-		}
+
+		itFace.Initialize(aListOfFaces);
+
+		const TopoDS_Shape& face1 = itFace.Value();
+		Standard_Integer faceIndex1 = faceMap.FindIndex(face1);
+
+		itFace.Next();
+		const TopoDS_Shape& face2 = itFace.Value();
+		Standard_Integer faceIndex2 = faceMap.FindIndex(face2);
+
+		const TopoDS_Edge& edge = TopoDS::Edge(aEdgeFaceMap.FindKey(i));
+
+		classify(face1, face2, edge, &category);
 	}
 
 	auto finish = std::chrono::high_resolution_clock::now();
