@@ -66,10 +66,10 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 * Database query
 
 	0. CREATE FUNCTION cadinit(cstring) RETURNS int AS 'cadfix' LANGUAGE C;  
-	1. select cadinit('path\to\cad.step');  
-	2. CREATE FUNCTION full_edge(cstring) RETURNS int AS 'cadfix' LANGUAGE C;  
-	3. select full_edge('evaluate');  
-	4. select full_edge('import');  
+	1. select cadinit('path/to/cad.step');  
+	2. CREATE FUNCTION full_edge(cstring,cstring) RETURNS int AS 'cadfix' LANGUAGE C;  
+	3. select full_edge('evaluate','path/to/evaluate.csv');  
+	4. select full_edge('import','path/to/import.csv');  
 
 * How to run tests
 

@@ -331,6 +331,7 @@ extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
 	auto time_elapsed_nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count();
 	printf("LOG: Time taken (nanoseconds): %ld\n", time_elapsed_nanos);
 
+	fprintf (fs, "%ld\n", time_elapsed_nanos);
 	return 0;
 }
 

@@ -34,18 +34,22 @@ PG_FUNCTION_INFO_V1(full_edge);
 Datum full_edge(PG_FUNCTION_ARGS);
 Datum full_edge(PG_FUNCTION_ARGS)
 {
-  char* pch = NULL;
-  pch = PG_GETARG_CSTRING(0);
-  if (strcmp(pch, "evaluate") == 0) {
-    FILE *fs = fopen("D:\\Workspaces\\Project\\nxCad\\evaluate_full_edge.csv", "w");
+  char *method, *path;
+  method = PG_GETARG_CSTRING(0);
+  path = PG_GETARG_CSTRING(1);
+
+  printf("path => %s\n", path);
+
+  if (strcmp(method, "evaluate") == 0) {
+    FILE *fs = fopen(path, "w");
     occ_write_edge_face_class_evaluate(fs);
     fclose (fs);
-  } else if (strcmp(pch, "import") == 0) {
-    FILE *fs = fopen("D:\\Workspaces\\Project\\nxCad\\full_edge.csv", "w");
+  } else if (strcmp(method, "import") == 0) {
+    FILE *fs = fopen(path, "w");
     occ_write_edge_face_class(fs);
     fclose (fs);
   } else {
-    printf("wrong option: %s\n", pch);
+    printf("wrong option: %s\n", method);
   }
   return true;
 }
