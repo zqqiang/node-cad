@@ -895,6 +895,7 @@ sub AdjustModule
 		$proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKSTEP.lib');
 		$proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKTopAlgo.lib');
 		$proj->AddLibrary('D:\Workspaces\Project\nxCad\node-cad\oce-0.17\Win32\lib\TKXSBase.lib');
+		$proj->AddLibrary('../oce-0.17/Win32/lib/TKG3d.lib');
 
 		# todo use lib
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKMesh.lib');
@@ -920,7 +921,6 @@ sub AdjustModule
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKFeat.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKFillet.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKG2d.lib');
-		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKG3d.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKGeomAlgo.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKGeomBase.lib');
 		# $proj->AddLibrary('../oce-0.17/Win32/lib/TKHLR.lib');
