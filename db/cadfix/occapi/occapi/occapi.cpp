@@ -9,15 +9,23 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <GeomLProp_SLProps.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <TopoDS.hxx>
 
 #include <chrono>
 #include "occapi.h"
 
 static TopoDS_Shape aResShape;
 
+enum {
+	CONCAVE = 1,
+	CONVEX,
+	TANGENTIAL,
+	MIXED
+};
 
 /* Returns the orientation of a face within its parent body. */
-int face_orientation(TopoDS_Face &face, double *orientation)
+int face_orientation(const TopoDS_Face &face, double *orientation)
 {
 	TopAbs_Orientation orient = face.Orientation();
 
@@ -71,9 +79,9 @@ void cross_product(Standard_Real v1_x,
 	v[2] = vt[2];
 }
 
-int classify_at_t(TopoDS_Face &face1,
-                  TopoDS_Face &face2,
-                  TopoDS_Edge &edge,
+int classify_at_t(const TopoDS_Face &face1,
+                  const TopoDS_Face &face2,
+                  const TopoDS_Edge &edge,
                   double orient_line_in_face1,
                   double t,
                   int *category)
@@ -85,7 +93,7 @@ int classify_at_t(TopoDS_Face &face1,
 	double orient2;
 	double cross[3];
 	// double tangent[3];
-	double dxtt, dytt, dztt;
+	// double dxtt, dytt, dztt;
 	double cosine;
 	int convex;
 
@@ -159,22 +167,22 @@ int classify_at_t(TopoDS_Face &face1,
 	// cficCalcLineDerivAtT(line, t, tangent + 0, tangent + 1,
 	//                      tangent + 2, &dxtt, &dytt, &dztt);
 
-	Standard_Real aFirst, aLast;
-	Handle(Geom_Curve) aCurve3d = BRep_Tool::Curve (edge, aFirst, aLast);
+	BRepAdaptor_Curve curve;
+	curve.Initialize(edge);
 
 	gp_Pnt P;
 	gp_Vec V1, V2;
-	aCurve3d.D2(t, P, V1, V2);
+	curve.D2(t, P, V1, V2);
 
 	convex = dot_product(cross[0], cross[1], cross[2], V1.X(), V1.Y(), V1.Z()) * orient_line_in_face1 * orient1 < 0.0;
 
 	if (fabs(cosine) > cos(M_PI / 40.0)) {
 		/* Angle < 4.5 degrees; call this flat. */
-		*class = TANGENTIAL;
+		*category = TANGENTIAL;
 	} else if (convex) {
-		*class = CONVEX;
+		*category = CONVEX;
 	} else {
-		*class = CONCAVE;
+		*category = CONCAVE;
 	}
 
 // cleanup:
@@ -182,40 +190,43 @@ int classify_at_t(TopoDS_Face &face1,
 // 	if (normal1) cficFree(normal1);
 // 	if (normal2) cficFree(normal2);
 
-	return result;
+	return 0;
 }
 
 /* Classifies a given line as CONCAVE, CONVEX, TANGENTIAL or MIXED. */
-int classify(TopoDS_Face &Face1, TopoDS_Face &Face2,  TopoDS_Edge &edge, int *class)
+int classify(const TopoDS_Face &face1, const TopoDS_Face &face2,  const TopoDS_Edge &edge, int *category)
 {
-	int num_parents;
+	// int num_parents;
 	int *parent_types = NULL;
-	int *signed_parent_numbers = NULL;
-	int magic;
-	int num_parents2;
-	int orient_line_in_face1;
+	// int *signed_parent_numbers = NULL;
+	// int magic;
+	// int num_parents2;
+	double orient_line_in_face1;
 	int i;
 
-	*class = 0;
+	*category = 0;
+
+	printf("face1.orientation() => %d\n", face1.Orientation());
+	orient_line_in_face1 = (face1.Orientation() == TopAbs_FORWARD) ? 1.0 : -1.0;
 
 	/* Check the classification at 11 points along the edge. */
 	for (i = 0; i <= 10; ++i) {
-		int category;
+		int class2;
 
-		classify_at_t(face1, face2, edge, orient_line_in_face1, i * 0.1, &category);
+		classify_at_t(face1, face2, edge, orient_line_in_face1, i * 0.1, &class2);
 
 		/* If we have no classification for this edge yet, use this
 		   classification. Otherwise, if the current classification is
 		   tangential, override it with the new one, or if the current and new
 		   classifications disagree, mark this edge as MIXED. */
-		if (*class == 0) {
-			*class = category;
-		} else if (*class == category) {
+		if (*category == 0) {
+			*category = class2;
+		} else if (*category == class2) {
 			/* Do nothing. */
-		} else if (*class == TANGENTIAL) {
-			*class = category;
+		} else if (*category == TANGENTIAL) {
+			*category = class2;
 		} else {
-			*class = MIXED;
+			*category = MIXED;
 		}
 	}
 
@@ -302,11 +313,11 @@ extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
 
 		itFace.Initialize(aListOfFaces);
 
-		const TopoDS_Shape& face1 = itFace.Value();
+		const TopoDS_Face& face1 = TopoDS::Face(itFace.Value());
 		Standard_Integer faceIndex1 = faceMap.FindIndex(face1);
 
 		itFace.Next();
-		const TopoDS_Shape& face2 = itFace.Value();
+		const TopoDS_Face& face2 = TopoDS::Face(itFace.Value());
 		Standard_Integer faceIndex2 = faceMap.FindIndex(face2);
 
 		const TopoDS_Edge& edge = TopoDS::Edge(aEdgeFaceMap.FindKey(i));
