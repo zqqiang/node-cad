@@ -206,8 +206,10 @@ int classify(const TopoDS_Face &face1, const TopoDS_Face &face2,  const TopoDS_E
 
 	*category = 0;
 
-	printf("face1.orientation() => %d\n", face1.Orientation());
 	orient_line_in_face1 = (face1.Orientation() == TopAbs_FORWARD) ? 1.0 : -1.0;
+	if (face1.Orientation() != TopAbs_FORWARD && face1.Orientation() != TopAbs_REVERSED ) {
+		printf("ERROR: face1.Orientation() => %d\n", face1.Orientation());
+	}
 
 	/* Check the classification at 11 points along the edge. */
 	for (i = 0; i <= 10; ++i) {
@@ -334,5 +336,46 @@ extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
 
 extern "C" int occ_write_edge_face_class(FILE *fs)
 {
+	int category;
+
+	TopTools_IndexedDataMapOfShapeListOfShape aEdgeFaceMap;
+	TopExp::MapShapesAndAncestors(aResShape, TopAbs_EDGE, TopAbs_FACE, aEdgeFaceMap);
+
+	TopTools_IndexedMapOfShape faceMap;
+	TopExp::MapShapes(aResShape, TopAbs_FACE, faceMap);
+
+	Standard_Integer i, nE = aEdgeFaceMap.Extent();
+	printf("Log: Face Edge map number => %d\n", nE);
+
+	for (i = 1; i <= nE; ++i) {
+		const TopTools_ListOfShape& aListOfFaces = aEdgeFaceMap.FindFromIndex(i);
+
+		Standard_Integer numOfFace = aListOfFaces.Extent();
+		if (2 != numOfFace) {
+			printf("ERROR: index [%d] parent face number is [%d]\n", i, numOfFace);
+			continue;
+		}
+
+		TopTools_ListIteratorOfListOfShape itFace;
+
+		itFace.Initialize(aListOfFaces);
+
+		const TopoDS_Face& face1 = TopoDS::Face(itFace.Value());
+		Standard_Integer faceIndex1 = faceMap.FindIndex(face1);
+
+		itFace.Next();
+		const TopoDS_Face& face2 = TopoDS::Face(itFace.Value());
+		Standard_Integer faceIndex2 = faceMap.FindIndex(face2);
+
+		const TopoDS_Edge& edge = TopoDS::Edge(aEdgeFaceMap.FindKey(i));
+
+		classify(face1, face2, edge, &category);
+
+		fprintf (fs,
+		         "%d,%d,%d,%d\n%d,%d,%d,%d\n",
+		         i, faceIndex1, faceIndex2, category,
+		         i, faceIndex2, faceIndex1, category);
+	}
+
 	return 0;
 }
