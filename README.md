@@ -70,6 +70,54 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 	2. CREATE FUNCTION full_edge(cstring,cstring) RETURNS int AS 'cadfix' LANGUAGE C;  
 	3. select full_edge('evaluate','path/to/evaluate.csv');  
 	4. select full_edge('import','path/to/import.csv');  
+	5. CREATE unlogged TABLE IF NOT EXISTS full_edge ( EDGE INTEGER, face1 INTEGER, FACE2 INTEGER , DIHEDRAL INTEGER);  
+	6. COPY full_edge FROM 'path/to/import.csv' with csv;  
+	7. CREATE TABLE RESULT AS SELECT
+	   full_edge_e1.edge as e1,  
+	   full_edge_e1.face1 as f1,  
+	   full_edge_e1.face2 as f2,  
+	   full_edge_e2.edge as e2,  
+	   full_edge_e2.face2 as f3,  
+	   full_edge_e3.edge as e3,  
+	   full_edge_e3.face2 as f4,  
+	   full_edge_e4.edge as e4,  
+	   full_edge_e5.edge as e5  
+	   FROM  
+	   full_edge full_edge_e5,  
+	   full_edge full_edge_e4,  
+	   full_edge full_edge_e3,  
+	   full_edge full_edge_e2,  
+	   full_edge full_edge_e1  
+	   WHERE  
+	   full_edge_e1.face2=full_edge_e2.face1 AND  
+	   full_edge_e1.face1=full_edge_e3.face1 AND  
+	   full_edge_e1.face1=full_edge_e4.face1 AND  
+	   full_edge_e1.face2=full_edge_e5.face1 AND  
+	   full_edge_e2.face2=full_edge_e4.face2 AND  
+	   full_edge_e2.face1=full_edge_e5.face1 AND  
+	   full_edge_e3.face1=full_edge_e4.face1 AND  
+	   full_edge_e3.face2=full_edge_e5.face2 AND  
+	   full_edge_e1.dihedral=1 AND  
+	   full_edge_e2.dihedral=2 AND  
+	   full_edge_e3.dihedral=2 AND  
+	   full_edge_e4.dihedral=2 AND  
+	   full_edge_e3.face2<>full_edge_e2.face2 AND  
+	   full_edge_e3.face2<>full_edge_e1.face2 AND  
+	   full_edge_e3.face2<>full_edge_e1.face1 AND  
+	   full_edge_e2.face2<>full_edge_e1.face2 AND  
+	   full_edge_e2.face2<>full_edge_e1.face1 AND  
+	   full_edge_e1.face2<>full_edge_e1.face1 AND  
+	   full_edge_e5.edge<>full_edge_e4.edge AND  
+	   full_edge_e5.edge<>full_edge_e3.edge AND  
+	   full_edge_e5.edge<>full_edge_e2.edge AND  
+	   full_edge_e5.edge<>full_edge_e1.edge AND  
+	   full_edge_e4.edge<>full_edge_e3.edge AND  
+	   full_edge_e4.edge<>full_edge_e2.edge AND  
+	   full_edge_e4.edge<>full_edge_e1.edge AND  
+	   full_edge_e3.edge<>full_edge_e2.edge AND  
+	   full_edge_e3.edge<>full_edge_e1.edge AND  
+	   full_edge_e2.edge<>full_edge_e1.edge ;  
+
 
 * How to run tests
 
