@@ -116,7 +116,7 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 	   full_edge_e4.edge<>full_edge_e1.edge AND  
 	   full_edge_e3.edge<>full_edge_e2.edge AND  
 	   full_edge_e3.edge<>full_edge_e1.edge AND  
-	   full_edge_e2.edge<>full_edge_e1.edge ;  
+	   full_edge_e2.edge<>full_edge_e1.edge;  
 
 
 * How to run tests
