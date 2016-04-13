@@ -15,8 +15,8 @@ var app = express();
 
 app.configure(function() {
   app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
+  // app.set('views', __dirname + '/views');
+  // app.set('view engine', 'ejs');
   app.use(express.compress());
   app.use(express.favicon());
   app.use(express.logger('dev'));
@@ -26,8 +26,8 @@ app.configure(function() {
   app.use(express.session());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use(express.static(path.join(__dirname, 'client')));
-  app.use(express.static(path.join(__dirname, '../lib'))); // to get CSGTree.js
+  // app.use(express.static(path.join(__dirname, 'client')));
+  // app.use(express.static(path.join(__dirname, '../lib'))); // to get CSGTree.js
 });
 
 app.configure('development', function() {

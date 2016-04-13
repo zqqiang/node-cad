@@ -4,21 +4,23 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 ### What is this repository for? ###
 
-* v0.0.1
+* v0.2.0
 * [Learn More]()
 
 ### How do I get set up? ###
 
 * Summary of set up
   
-	1.npm install  
-	2.set-env.bat  
-	3.node install.js  
-	4.cd node_modules/node-occ  
-	5.npm install  
-	6.cd ../..  
-	7.node app.js  
-	8.browse [http://localhost:3000/](http://localhost:3000/) and [http://localhost:3000/viewer](http://localhost:3000/viewer)  
+    1.open Developer Command Prompt for VS2012  
+    2.cd current directory  
+	3.npm install  
+	4.set-env.bat  
+	5.node install.js  
+	6.cd node_modules/node-occ  
+	7.npm install  
+	8.cd ../..  
+	9.node app.js  
+	10.browse [http://localhost:3000/](http://localhost:3000/) and [http://localhost:3000/viewer](http://localhost:3000/viewer)  
 
 * Steps of add c++ module
 
@@ -42,7 +44,7 @@ Software for Declarative CAD Feature Recognition — an efﬁcient approach
 
 	you need [Microsoft Visual Studio 2012](http://www.microsoft.com/en-us/download/details.aspx?id=30682)  
 	download and install [cmake](http://www.cmake.org/download/)  
-	install node-js 32 bits version 0.12 from [www.nodejs.org](http://nodejs.org/dist/v0.12.0/node-v0.12.0-x86.msi)  
+	install node-js 32 bits v4.3.2 from [www.nodejs.org](https://nodejs.org/download/release/v4.3.2/node-v4.3.2-x86.msi)  
 
 * Database build and install
 

@@ -36,7 +36,19 @@ int face_orientation(const TopoDS_Face &face, double *orientation)
 		TopAbs_EXTERNAL
 	*/
 
-	if (orient > 0) {
+	if (TopAbs_FORWARD == orient) {
+		printf("orient [%s]\n", "TopAbs_FORWARD");
+	} else if (TopAbs_REVERSED == orient) {
+		printf("orient [%s]\n", "TopAbs_REVERSED");
+	} else if (TopAbs_INTERNAL == orient) {
+		printf("orient [%s]\n", "TopAbs_INTERNAL");
+	} else if (TopAbs_EXTERNAL == orient) {
+		printf("orient [%s]\n", "TopAbs_EXTERNAL");
+	} else {
+		printf("orient [%s]\n", "TopAbs_XXX");
+	}
+
+	if (TopAbs_FORWARD == orient) {
 		*orientation = 1.0;
 	} else {
 		*orientation = -1.0;
@@ -124,6 +136,9 @@ int classify_at_t(const TopoDS_Face &face1,
 	face_orientation(face1, &orient1);
 	face_orientation(face2, &orient2);
 
+	printf("face1 orient1 [%f]\n", orient1);
+	printf("face2 orient2 [%f]\n", orient2);
+
 	// {
 	// 	int j;
 	// 	for (j = 0; j < 3; ++j) {
@@ -133,6 +148,14 @@ int classify_at_t(const TopoDS_Face &face1,
 	// }
 
 	Standard_Real x1, y1, z1, x2, y2, z2;
+
+	printf("norm1.X() [%f]\n", norm1.X());
+	printf("norm1.Y() [%f]\n", norm1.Y());
+	printf("norm1.Z() [%f]\n", norm1.Z());
+
+	printf("norm2.Y() [%f]\n", norm2.Y());
+	printf("norm2.X() [%f]\n", norm2.X());
+	printf("norm2.Z() [%f]\n", norm2.Z());
 
 	x1 = norm1.X() * orient1;
 	y1 = norm1.Y() * orient1;
@@ -167,6 +190,8 @@ int classify_at_t(const TopoDS_Face &face1,
 	// cficCalcLineDerivAtT(line, t, tangent + 0, tangent + 1,
 	//                      tangent + 2, &dxtt, &dytt, &dztt);
 
+	// convex = dot_product(cross, tangent) * orient_line_in_face1 * orient1 < 0.0;
+
 	BRepAdaptor_Curve curve;
 	curve.Initialize(edge);
 
@@ -174,7 +199,13 @@ int classify_at_t(const TopoDS_Face &face1,
 	gp_Vec V1, V2;
 	curve.D2(t, P, V1, V2);
 
+	printf("cross [%f, %f, %f]\n", cross[0], cross[1], cross[2]);
+	printf("V1 [%f, %f, %f]\n", V1.X(), V1.Y(), V1.Z());
+	printf("orient_line_in_face1 [%f]\n", orient_line_in_face1);
+
 	convex = dot_product(cross[0], cross[1], cross[2], V1.X(), V1.Y(), V1.Z()) * orient_line_in_face1 * orient1 < 0.0;
+
+	printf("cosine [%f], cos(M_PI / 40.0) [%f]\n", cosine, cos(M_PI / 40.0));
 
 	if (fabs(cosine) > cos(M_PI / 40.0)) {
 		/* Angle < 4.5 degrees; call this flat. */
@@ -323,6 +354,8 @@ extern "C" int occ_write_edge_face_class_evaluate(FILE *fs)
 		Standard_Integer faceIndex2 = faceMap.FindIndex(face2);
 
 		const TopoDS_Edge& edge = TopoDS::Edge(aEdgeFaceMap.FindKey(i));
+
+		printf("face1 [%d], face2 [%d], edge [%d]\n", faceIndex1, faceIndex2, i);
 
 		classify(face1, face2, edge, &category);
 	}
